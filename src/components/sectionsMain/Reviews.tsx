@@ -1,10 +1,10 @@
 "use client";
 
 import Image from "next/image";
+import { motion } from "framer-motion";
 import { useCallback, useEffect, useState } from "react";
-import { ChevronLeft, ChevronRight, Play } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import useEmblaCarousel from "embla-carousel-react";
-import Autoplay from "embla-carousel-autoplay";
 
 type ReviewItem = {
   id: string;
@@ -103,7 +103,6 @@ export default function Reviews() {
 
   useEffect(() => {
     if (!emblaApi) return;
-
     onSelect();
     emblaApi.on("select", onSelect);
     emblaApi.on("reInit", onSelect);
@@ -120,47 +119,31 @@ export default function Reviews() {
   return (
     <section id="reviews" className="relative overflow-hidden py-20 max-md:py-10">
       <div className="px-4">
-        <div className="mb-10 text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.9 }}
+          className="mb-10 text-center"
+        >
           <h2 className="text-4xl font-semibold uppercase tracking-wide text-white max-sm:text-[6vw]">
             Отзывы наших <span className="text-accent">клиентов</span>
           </h2>
-        </div>
+        </motion.div>
 
         <div className="relative">
           <button
-            type="button"
             onClick={scrollPrev}
-            aria-label="Предыдущий"
-            className={`
-              group absolute left-0 top-1/2 z-20 -translate-y-1/2
-              flex h-12 w-12 items-center justify-center rounded-full
-              border border-accent/20 bg-[#081714]/90 text-accent
-              transition-all duration-300 ease-out
-              hover:-translate-x-1 hover:scale-105 hover:border-accent/50
-              hover:bg-accent/10 
-              active:scale-95 active:translate-x-0
-              ${!canScrollPrev ? "pointer-events-none opacity-0" : "opacity-100"}
-            `}
+            className={`group absolute left-0 top-1/2 z-50 -translate-y-1/2 flex h-12 w-12 items-center justify-center rounded-full border border-accent/20 bg-[#081714]/90 text-accent transition-all duration-300 hover:-translate-x-1 hover:scale-105 hover:border-accent/50 hover:bg-accent/10 ${!canScrollPrev ? "pointer-events-none opacity-0" : "opacity-100"}`}
           >
-            <ChevronLeft className="size-6 transition-transform duration-300 group-hover:-translate-x-0.5 group-active:-translate-x-1" />
+            <ChevronLeft className="size-6 transition-transform group-hover:-translate-x-0.5" />
           </button>
 
           <button
-            type="button"
             onClick={scrollNext}
-            aria-label="Следующий"
-            className={`
-              group absolute right-0 top-1/2 z-20 -translate-y-1/2
-              flex h-12 w-12 items-center justify-center rounded-full
-              border border-accent/20 bg-[#081714]/90 text-accent
-              transition-all duration-300 ease-out
-              hover:translate-x-1 hover:scale-105 hover:border-accent/50
-              hover:bg-accent/10
-              active:scale-95 active:translate-x-0
-              ${!canScrollNext ? "pointer-events-none opacity-0" : "opacity-100"}
-            `}
+            className={`group absolute right-0 top-1/2 z-50 -translate-y-1/2 flex h-12 w-12 items-center justify-center rounded-full border border-accent/20 bg-[#081714]/90 text-accent transition-all duration-300 hover:translate-x-1 hover:scale-105 hover:border-accent/50 hover:bg-accent/10 ${!canScrollNext ? "pointer-events-none opacity-0" : "opacity-100"}`}
           >
-            <ChevronRight className="size-6 transition-transform duration-300 group-hover:translate-x-0.5 group-active:translate-x-1" />
+            <ChevronRight className="size-6 transition-transform group-hover:translate-x-0.5" />
           </button>
 
           <div className="px-14 max-md:px-0" ref={emblaRef}>
@@ -169,34 +152,45 @@ export default function Reviews() {
                 const isActive = activeIndex === i;
 
                 return (
-                  <div
+                  <motion.div
                     key={item.id}
                     className="flex-[0_0_280px] flex justify-center"
+                    initial={{
+                      opacity: 0,
+                      y: 80,
+                      scale: 0.88,
+                      rotate: i % 2 === 0 ? -8 : 8,
+                    }}
+                    whileInView={{
+                      opacity: 1,
+                      y: 0,
+                      scale: 1,
+                      rotate: 0,
+                    }}
+                    viewport={{ once: true, margin: "-100px" }}
+                    transition={{
+                      duration: 0.9,
+                      ease: [0.22, 1, 0.36, 1],
+                      delay: i * 0.1,
+                    }}
                   >
                     <article
                       className={`
                         group relative w-full overflow-hidden rounded-[26px]
                         border bg-[linear-gradient(180deg,rgba(7,22,18,0.96),rgba(2,17,15,0.98))]
-                        
                         transition-all duration-500 ease-out
-                        ${
-                          isActive
-                            ? "border-accent/30 -translate-y-2 shadow-[0_0_40px_rgba(245,179,23,0.12)]"
-                            : "border-white/10 shadow-[0_14px_40px_rgba(0,0,0,0.35)] hover:shadow-[0_0_40px_rgba(245,179,23,0.12)]"
+                        ${isActive
+                          ? "border-accent/30 -translate-y-2 shadow-[0_0_40px_rgba(245,179,23,0.15)]"
+                          : "border-white/10 shadow-[0_14px_40px_rgba(0,0,0,0.35)] hover:shadow-[0_0_40px_rgba(245,179,23,0.12)]"
                         }
                         hover:-translate-y-2 hover:border-accent/30
-                        
                       `}
                     >
                       <div
                         className={`
                           pointer-events-none absolute inset-0 transition-opacity duration-500
                           bg-[radial-gradient(circle_at_top,rgba(245,179,23,0.12),transparent_70%)]
-                          ${
-                            isActive
-                              ? "opacity-100"
-                              : "opacity-0 group-hover:opacity-100"
-                          }
+                          ${isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"}
                         `}
                       />
 
@@ -208,19 +202,13 @@ export default function Reviews() {
                                 src={item.src}
                                 alt={item.name}
                                 fill
-                                className="
-                                  object-cover
-                                  transition-transform duration-700 ease-out
-                                "
+                                className="object-cover transition-transform duration-700 ease-out"
                               />
                             ) : (
                               <video
                                 src="/videos/example.mp4"
                                 poster={item.poster}
-                                className="
-                                  h-full w-full object-cover
-                                  transition-transform duration-700 ease-out
-                                "
+                                className="h-full w-full object-cover transition-transform duration-700 ease-out"
                                 controls
                                 playsInline
                                 preload="metadata"
@@ -241,11 +229,7 @@ export default function Reviews() {
                             <div
                               className={`
                                 text-[15px] font-semibold transition-colors duration-300
-                                ${
-                                  isActive
-                                    ? "text-accent"
-                                    : "text-white group-hover:text-accent"
-                                }
+                                ${isActive ? "text-accent" : "text-white group-hover:text-accent"}
                               `}
                             >
                               {item.name}
@@ -258,15 +242,11 @@ export default function Reviews() {
                           <div
                             className={`
                               flex items-center gap-0.5 text-accent transition-all duration-300
-                              ${
-                                isActive
-                                  ? "scale-105"
-                                  : "group-hover:scale-105"
-                              }
+                              ${isActive ? "scale-110" : "group-hover:scale-110"}
                             `}
                           >
-                            {Array.from({ length: item.rating ?? 5 }).map((_, i) => (
-                              <span key={i} className="text-sm leading-none">
+                            {Array.from({ length: item.rating ?? 5 }).map((_, idx) => (
+                              <span key={idx} className="text-sm leading-none">
                                 ★
                               </span>
                             ))}
@@ -276,18 +256,14 @@ export default function Reviews() {
                         <p
                           className={`
                             text-[13px] leading-6 transition-colors duration-300
-                            ${
-                              isActive
-                                ? "text-white/85"
-                                : "text-white/72 group-hover:text-white/85"
-                            }
+                            ${isActive ? "text-white/85" : "text-white/72 group-hover:text-white/85"}
                           `}
                         >
                           {item.text}
                         </p>
                       </div>
                     </article>
-                  </div>
+                  </motion.div>
                 );
               })}
             </div>

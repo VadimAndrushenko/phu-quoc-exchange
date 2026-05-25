@@ -107,7 +107,7 @@ export default function RatesButton() {
                 </div>
 
                 {/* TEXT */}
-                <div className="flex flex-col items-start leading-none  text-white text-xs uppercase tracking-wider mb-0.5 max-sm:text-[8px] max-[480px]:!text-[6px]">
+                <div className="flex flex-col items-start leading-none  text-white text-xs uppercase tracking-wider max-sm:text-[8px] max-[480px]:!text-[6px]">
                     Live Rate
                 </div>
 

@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import {
   ShieldCheck,
   AlertTriangle,
@@ -62,7 +63,14 @@ export default function Important() {
   return (
     <section id="important" className="relative py-20 max-md:py-10">
       <div className="container">
-        <div className="mb-14 text-center">
+        {/* Заголовочная часть */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.9 }}
+          className="mb-14 text-center"
+        >
           <div className="mb-4 inline-flex items-center gap-3">
             <AlertTriangle className="h-10 w-10 text-accent" />
             <span className="text-xl font-semibold tracking-widest text-accent max-sm:text-[3.5vw]">
@@ -77,17 +85,46 @@ export default function Important() {
           <p className="mx-auto mt-4 max-w-3xl text-white/70 max-sm:text-[4vw]">
             Пожалуйста, внимательно ознакомьтесь с информацией перед обменом
           </p>
-        </div>
+        </motion.div>
 
+        {/* Карточки */}
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {infoBlocks.map((block, i) => {
             const Icon = block.icon;
             const isActive = activeIndex === i;
 
+            // Интересные направления появления
+            const getInitial = () => {
+              if (i === 0) return { opacity: 0, x: -80, y: 40 };     // 1 - слева
+              if (i === 1) return { opacity: 0, y: 90 };             // 2 - снизу
+              if (i === 2) return { opacity: 0, x: 80, y: 40 };      // 3 - справа
+              if (i === 3) return { opacity: 0, x: -70, y: 50 };     // 4 - слева
+              if (i === 4) return { opacity: 0, y: 80 };             // 5 - снизу
+              if (i === 5) return { opacity: 0, x: 70, y: 40 };      // 6 - справа
+              return { opacity: 0, y: 60 };                           // 7 - снизу
+            };
+
             return (
-              <div
+              <motion.div
                 key={i}
                 ref={setItemRef(i)}
+                initial={getInitial()}
+                whileInView={{
+                  opacity: 1,
+                  x: 0,
+                  y: 0,
+                }}
+                viewport={{ once: true, margin: "-70px" }}
+                transition={{
+                  duration: 0.8,
+                  ease: [0.22, 1, 0.36, 1],
+                  delay: i * 0.08,
+                }}
+                whileHover={{ 
+                  y: -12, 
+                  scale: 1.03,
+                  transition: { duration: 0.4 }
+                }}
                 className={`
                   group relative overflow-hidden rounded-3xl border
                   py-5 px-7 backdrop-blur-sm transition-all duration-500 ease-out
@@ -154,7 +191,7 @@ export default function Important() {
                 </div>
 
                 <div className="absolute bottom-0 left-7 right-7 h-0.5 bg-gradient-to-r from-transparent via-accent/30 to-transparent" />
-              </div>
+              </motion.div>
             );
           })}
         </div>

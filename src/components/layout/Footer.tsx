@@ -1,7 +1,9 @@
-import Link from "next/link"
+"use client";
+import Link from "next/link";
 import Image from 'next/image';
-import Logo from "../ui/Logo"
-import FooterNavSection from "../ui/FooterNavSection"
+import { motion } from "framer-motion";
+import Logo from "../ui/Logo";
+import FooterNavSection from "../ui/FooterNavSection";
 import { MessageCircleMore, Send } from "lucide-react";
 
 export const socialItems = [
@@ -20,7 +22,7 @@ export const socialItems = [
     label: "Instagram",
     icon: "/svg/instagram.svg",
   },
-]
+];
 
 const footerNavSections = {
   УСЛУГИ: [
@@ -44,13 +46,26 @@ const footerNavSections = {
     { href: "/terms", label: 'Terms of Use' },
     { href: "/disclaimer", label: 'Disclaimer' },
   ],
-}
+};
+
+const fadeIn = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.8, ease: "easeOut" }
+  }
+} as const;
 
 export default function Footer() {
   return (
     <>
       <div className="overflow-hidden rounded-t-4xl border border-white/10 mt-20 bg-background/50 backdrop-blur-sm max-md:mt-10">
-        <div
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={fadeIn}
           className="
             container
             flex min-h-[180px] items-center justify-center gap-x-[13vw] gap-y-5
@@ -58,8 +73,6 @@ export default function Footer() {
             max-md:flex-col
           "
         >
-
-
           {/* текст */}
           <div className="text-center ">
             <h3 className="text-[32px] sm:text-[40px] lg:text-[44px] font-semibold uppercase leading-none text-white ">
@@ -118,7 +131,6 @@ export default function Footer() {
               </span>
             </Link>
 
-            {/* WhatsApp */}
             <Link
               href="/"
               target="_blank"
@@ -146,16 +158,19 @@ export default function Footer() {
               </span>
             </Link>
           </div>
-
-          {/* мобильная адаптация */}
-        </div>
+        </motion.div>
       </div>
 
       <footer className="bg-gradient-to-b from-[#091A17] to-[#061210] text-white/90 border-t border-white/10">
 
         <div className="container py-12">
-
-          <div className="flex max-xl:flex-col">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeIn}
+            className="flex max-xl:flex-col"
+          >
             <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 basis-[80%]">
 
               {/* Brand */}
@@ -184,24 +199,13 @@ export default function Footer() {
                         hover:shadow-[0_0_25px_rgba(245,179,23,0.18)]
                       "
                     >
-                      {/* glow */}
-                      <div
-                        className="
-                          absolute inset-0 opacity-0 transition-opacity duration-500
-                          group-hover:opacity-100
-                          bg-[radial-gradient(circle_at_top,rgba(245,179,23,0.18),transparent_70%)]
-                        "
-                      />
-
+                      <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 bg-[radial-gradient(circle_at_top,rgba(245,179,23,0.18),transparent_70%)]" />
                       <Image
                         src={item.icon}
                         alt={item.label}
                         width={32}
                         height={32}
-                        className="
-                          relative z-10 transition-all duration-500
-                          group-hover:rotate-6 group-hover:scale-110
-                        "
+                        className="relative z-10 transition-all duration-500 group-hover:rotate-6 group-hover:scale-110"
                       />
                     </Link>
                   ))}
@@ -256,12 +260,17 @@ export default function Footer() {
                 </li>
               </ul>
             </div>
-
-          </div>  
+          </motion.div>  
 
           <div className="border-t border-white/10 mt-15 pt-8"/>
 
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-white/60">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-white/60"
+          >
             <p className="text-center md:text-left">
               © 2026 PHU QUOC EXCHANGE. Все права защищены.
             </p>
@@ -271,8 +280,7 @@ export default function Footer() {
               <Link href="/contacts" className="hover:text-white transition-colors">Реклама</Link>
               <Link href="/privacy" className="hover:text-white transition-colors">Политика конфиденциальности</Link>
             </div>
-          </div>
-
+          </motion.div>
         </div>
       </footer>
     </>        

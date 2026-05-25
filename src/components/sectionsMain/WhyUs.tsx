@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import {
   ShieldCheck,
   TrendingUp,
@@ -60,21 +61,45 @@ export default function WhyUs() {
   return (
     <section id="why-us" className="relative py-20 max-md:py-10">
       <div className="relative z-10">
-        <div className="mb-14 text-center">
+        {/* Заголовок */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.9, ease: "easeOut" }}
+          className="mb-14 text-center"
+        >
           <h2 className="text-4xl font-semibold uppercase tracking-wide text-white max-sm:text-[6vw]">
             Почему выбирают <span className="text-accent">нас?</span>
           </h2>
-        </div>
+        </motion.div>
 
         <div className="grid grid-cols-4 gap-5 max-xl:grid-cols-2 max-sm:grid-cols-1">
           {items.map((item, i) => {
             const Icon = item.icon;
             const isActive = activeIndex === i;
+            const isLeftSide = i % 4 === 0 || i % 4 === 1;
 
             return (
-              <div
+              <motion.div
                 key={item.title}
                 ref={setItemRef(i)}
+                initial={{
+                  opacity: 0,
+                  x: isLeftSide ? -90 : 90,
+                  y: 50,
+                }}
+                whileInView={{
+                  opacity: 1,
+                  x: 0,
+                  y: 0,
+                }}
+                viewport={{ once: true, margin: "-80px" }}
+                transition={{
+                  duration: 0.85,
+                  ease: [0.22, 1, 0.36, 1],
+                  delay: i * 0.06,
+                }}
                 className={`
                   group relative overflow-hidden rounded-3xl border
                   p-5 backdrop-blur-sm transition-all duration-500 ease-out
@@ -133,7 +158,7 @@ export default function WhyUs() {
                     {item.text}
                   </p>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
         </div>

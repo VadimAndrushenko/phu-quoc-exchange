@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import Logo from "../ui/Logo";
 import ButtonWell from "../ui/ButtonWell";
 import ButtonContact from "../ui/ButtonContact";
+import { motion } from "framer-motion";
 
 const menuItems = [
   { label: "Обмен валют", id: "hero" },
@@ -87,7 +88,23 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-50 bg-black/10 backdrop-blur-md border-b border-white/5 shadow-[0_4px_20px_rgba(0,0,0,0.12)] transition-all duration-500">
+    <motion.header
+      initial={{
+        opacity: 0,
+        y: -100,
+        filter: "blur(10px)",
+      }}
+      animate={{
+        opacity: 1,
+        y: 0,
+        filter: "blur(0px)",
+      }}
+      transition={{
+        duration: 0.9,
+        ease: "easeOut",
+      }}
+      className="sticky top-0 z-50 border-b border-white/5 bg-black/10 shadow-[0_4px_20px_rgba(0,0,0,0.12)] backdrop-blur-md transition-all duration-500 will-change-transform supports-[backdrop-filter]:bg-black/10"
+    >
       <div className="h-23.5 flex justify-between items-center container max-[480px]:h-17.5">
         <Logo />
 
@@ -97,7 +114,7 @@ export default function Header() {
             "max-xl:absolute duration-300 transition max-xl:top-full max-xl:left-0 max-xl:w-full max-xl:bg-[#071311]/95 max-xl:backdrop-blur-xl max-xl:border-t max-xl:border-white/5 max-xl:px-6 max-xl:py-8",
             isMenuOpen
               ? "max-xl:translate-y-0 max-xl:opacity-100 visible"
-              : "max-xl:-translate-y-5 max-xl:opacity-0 invisible"
+              : "max-xl:-translate-y-5 max-xl:opacity-0 "
           )}
         >
           <nav className="flex items-center max-xl:flex-col max-xl:items-start gap-y-5">
@@ -177,6 +194,6 @@ export default function Header() {
           <ButtonContact />
         </div>
       </div>
-    </header>
+    </motion.header>
   );
 }

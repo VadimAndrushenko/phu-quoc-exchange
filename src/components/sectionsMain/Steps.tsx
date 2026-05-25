@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import {
   MessageCircleMore,
   BadgeDollarSign,
@@ -41,19 +42,55 @@ export default function Steps() {
   return (
     <section id="steps" className="relative py-20 max-md:py-10">
       <div className="relative z-10">
-        <h2 className="mb-14 text-center text-4xl font-semibold uppercase tracking-wide text-white max-sm:text-[6vw]">
+        <motion.h2 
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.9 }}
+          className="mb-14 text-center text-4xl font-semibold uppercase tracking-wide text-white max-sm:text-[6vw]"
+        >
           Как проходит <span className="text-accent">обмен?</span>
-        </h2>
+        </motion.h2>
 
         <div className="grid grid-cols-4 gap-4 max-lg:grid-cols-2 max-sm:grid-cols-1">
           {steps.map((step, i) => {
             const Icon = step.icon;
             const isActive = activeIndex === i;
 
+            // Кастомная анимация появления
+            let initialX = 0;
+            let initialY = 0;
+
+            if (i === 0) {          
+              initialX = -200;
+            } 
+            else if (i === 1 || i === 2) { 
+              initialY = 200;
+            } 
+            else if (i === 3) {      
+              initialX = 200;
+            }
+
             return (
-              <div
+              <motion.div
                 key={step.id}
                 ref={setItemRef(i)}
+                initial={{
+                  opacity: 0,
+                  x: initialX,
+                  y: initialY,
+                }}
+                whileInView={{
+                  opacity: 1,
+                  x: 0,
+                  y: 0,
+                }}
+                viewport={{ once: true, margin: "-80px" }}
+                transition={{
+                  duration: 0.85,
+                  ease: [0.22, 1, 0.36, 1],
+                  delay: i * 0.13,
+                }}
                 className={`
                   group relative overflow-hidden rounded-3xl border
                   px-4 py-7 backdrop-blur-sm transition-all duration-500 ease-out
@@ -128,7 +165,7 @@ export default function Steps() {
                     {step.text}
                   </p>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
         </div>
