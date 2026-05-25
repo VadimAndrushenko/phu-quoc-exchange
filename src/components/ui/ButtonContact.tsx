@@ -31,10 +31,10 @@ export default function ButtonContact() {
     return (
         <div ref={wrapperRef} className="relative">
             <button
-                onClick={() => setConnectionOpen(!connectionOpen)}
+                onClick={() => setConnectionOpen((connectionOpen) => !connectionOpen)}
                 className={cn(
                     `
-                    rounded-2xl py-5 px-10 text-black font-semibold relative overflow-hidden text-nowrap
+                    rounded-2xl py-5 px-6 text-black font-semibold relative overflow-hidden text-nowrap
                     bg-[linear-gradient(90deg,#B38E35_0%,#E6BB79_40%)]
                     shadow-[0_0_30px_rgba(255,223,122,0.3)]
                     transition-all duration-300

@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from "react";
-import { ChevronDown } from "lucide-react";
+import { AlertTriangle, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Rates } from "@/shared/data/exchangeRate.data";
 
@@ -45,7 +45,7 @@ export default function RatesButton() {
 
             {/* BUTTON */}
             <button
-                onClick={() => setOpen(!open)}
+                onClick={() => setOpen((open) => !open)}
                 className={`
                     group
                     relative overflow-hidden
@@ -107,24 +107,8 @@ export default function RatesButton() {
                 </div>
 
                 {/* TEXT */}
-                <div className="flex flex-col items-start leading-none  text-[14px] max-lg:text-[12px] max-sm:text-[10px] max-[480px]:!text-[8px] ">
-
-                    <span className="text-white/50 text-[10px] uppercase tracking-wider mb-0.5 max-sm:text-[8px] max-[480px]:!text-[6px]">
-                        Live Rate
-                    </span>
-
-                    <div className="flex items-center gap-2">
-
-                        <span className="text-white font-semibold">
-                            RUB → VND
-                        </span>
-
-                        <span className="text-yellow-400 font-bold max-md:hidden">
-                            {Rates.RUB.VND}
-                        </span>
-
-                    </div>
-
+                <div className="flex flex-col items-start leading-none  text-white text-xs uppercase tracking-wider mb-0.5 max-sm:text-[8px] max-[480px]:!text-[6px]">
+                    Live Rate
                 </div>
 
                 {/* ARROW */}
@@ -144,7 +128,7 @@ export default function RatesButton() {
                         absolute min-[480px]:right-0 top-[115%]
                         w-[320px]
 
-                        max-[480px]:left-1/2 max-[480px]:-translate-x-1/2  max-[480]:top-[65px]
+                        max-[480px]:left-1/2 max-[480px]:-translate-x-1/2  max-[480]:top-[px]
 
                         rounded-3xl
                         overflow-hidden
@@ -210,6 +194,12 @@ export default function RatesButton() {
 
                         </div>
                     ))}
+                    <p className="flex items-center justify-center gap-3 text-xs text-white/70">
+                        <AlertTriangle className="text-accent shrink-0"/>
+                        <span>
+                            <span className="text-accent">Важная информация</span>: курс часто меняется чтобы получить актуальный курус свяжитесь с нами
+                        </span>
+                    </p>
 
                 </div>
 

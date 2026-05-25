@@ -263,7 +263,7 @@ export default function Form() {
                                         <div
                                             className="flex items-center gap-2 absolute right-3 top-1/2 -translate-y-1/2 z-10 
                                                         border border-gray-400 rounded-2xl text-black px-3 py-1 cursor-pointer hover:bg-gray-100"
-                                            onClick={() => setOpenFn(!isOpen)}
+                                            onClick={() => setOpenFn((isOpen) => !isOpen)}
                                         >
                                             <CircleDollarSign size={18} />
                                             <span className="font-medium">{field.currency}</span>
@@ -276,7 +276,7 @@ export default function Form() {
                                         
                                         <div className={`
                                             ${isOpen ? "" : "opacity-0 -translate-y-10 pointer-events-none"}
-                                            absolute right-0 z-20 top-[70px] bg-white rounded-2xl p-2 shadow-xl  w-40 transition duration-300
+                                            absolute right-0 z-20 top-17.5 bg-white rounded-2xl p-2 shadow-xl  w-40 transition duration-300
                                         `}>
                                             {Object.keys(Rates).map((cur) => (
                                                 <div

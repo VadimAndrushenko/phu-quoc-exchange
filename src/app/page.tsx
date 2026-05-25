@@ -1,10 +1,17 @@
 import Image from "next/image";
+
 import Hero from "@/components/sectionsMain/Hero";
+import Steps from "@/components/sectionsMain/Steps";
+import WhyUs from "@/components/sectionsMain/WhyUs";
+import ImportantInfo from "@/components/sectionsMain/Important";
+import FAQ from "@/components/sectionsMain/Faq";
+import Reviews from "@/components/sectionsMain/Reviews";
 
 export default function Home() {
   return (
-    <div className="relative min-h-screen overflow-hidden">
+    <div className="relative min-h-[calc(100vh-96px)] overflow-hidden">
 
+      {/* задний фон - картинка */}
       <div className="fixed inset-0 -z-20 max-md:hidden">
 
         <Image
@@ -29,11 +36,15 @@ export default function Home() {
         />
       </div>
 
+      {/* основной контент */}
       <main className="relative z-10 container">
 
         <Hero />
-
-        <div className="h-[2000px]" />
+        <WhyUs />
+        <Steps />
+        <ImportantInfo />
+        <Reviews/>
+        <FAQ />
 
       </main>
     </div>

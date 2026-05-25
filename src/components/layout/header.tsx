@@ -1,35 +1,182 @@
-import ButtonWell from "../ui/ButtonWell";
-import Logo from "../ui/Logo";
-import ButtonContact from './../ui/ButtonContact';
+"use client";
 
+import { useEffect, useRef, useState } from "react";
+import { cn } from "@/lib/utils";
+import Logo from "../ui/Logo";
+import ButtonWell from "../ui/ButtonWell";
+import ButtonContact from "../ui/ButtonContact";
+
+const menuItems = [
+  { label: "Обмен валют", id: "hero" },
+  { label: "Почему мы", id: "why-us" },
+  { label: "Как проходит обмен", id: "steps" },
+  { label: "Важная информация", id: "important" },
+  { label: "Отзывы", id: "reviews" },
+  { label: "Вопросы", id: "faq" },
+];
 
 export default function Header() {
-    return (
-        <header
-        className="
-            sticky top-0 z-50
+  const [activeId, setActiveId] = useState<string>("hero");
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-            bg-black/10
-            backdrop-blur-md
+  const menuRef = useRef<HTMLDivElement>(null);
+  const burgerRef = useRef<HTMLButtonElement>(null);
 
-            border-b border-white/5
+  const scrollToSection = (id: string) => {
+    const section = document.getElementById(id);
 
-            shadow-[0_4px_20px_rgba(0,0,0,0.12)]
+    if (section) {
+      const headerOffset = 90;
+      const elementPosition = section.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.scrollY - headerOffset;
 
-            transition-all duration-500
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth",
+      });
 
-            
+      setIsMenuOpen(false);
+    }
+  };
 
-    "
->
-    <div className="h-23.5 flex justify-between items-center container max-[480px]:h-17.5">
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + 200;
+
+      let currentSection = menuItems[0].id;
+
+      menuItems.forEach((item) => {
+        const section = document.getElementById(item.id);
+
+        if (section && scrollPosition >= section.offsetTop) {
+          currentSection = item.id;
+        }
+      });
+
+      setActiveId(currentSection);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    handleScroll();
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Node;
+
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(target) &&
+        burgerRef.current &&
+        !burgerRef.current.contains(target)
+      ) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  return (
+    <header className="sticky top-0 z-50 bg-black/10 backdrop-blur-md border-b border-white/5 shadow-[0_4px_20px_rgba(0,0,0,0.12)] transition-all duration-500">
+      <div className="h-23.5 flex justify-between items-center container max-[480px]:h-17.5">
         <Logo />
 
-        <div className="flex items-center gap-5 max-lg:gap-2">
-            <ButtonWell />
-            <ButtonContact />
+        <div
+          ref={menuRef}
+          className={cn(
+            "max-xl:absolute duration-300 transition max-xl:top-full max-xl:left-0 max-xl:w-full max-xl:bg-[#071311]/95 max-xl:backdrop-blur-xl max-xl:border-t max-xl:border-white/5 max-xl:px-6 max-xl:py-8",
+            isMenuOpen
+              ? "max-xl:translate-y-0 max-xl:opacity-100 visible"
+              : "max-xl:-translate-y-5 max-xl:opacity-0 invisible"
+          )}
+        >
+          <nav className="flex items-center max-xl:flex-col max-xl:items-start gap-y-5">
+            {menuItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => {
+                  scrollToSection(item.id);
+                  setIsMenuOpen(false);
+                }}
+                className={cn(
+                  "hover:text-accent hover-underline px-1.5 py-1 center text-sm text-white transition-all duration-300",
+                  activeId === item.id
+                    ? "text-accent hover-underline active"
+                    : "hover:hover-underline hover:text-accent"
+                )}
+              >
+                {item.label}
+              </button>
+            ))}
+          </nav>
         </div>
-    </div>
-</header>
-    );
+
+        <div className="flex items-center gap-3 max-lg:gap-2">
+          <button
+            ref={burgerRef}
+            type="button"
+            aria-label="Open menu"
+            title="Open menu"
+            onClick={() => setIsMenuOpen((prev) => !prev)}
+            className={cn(
+              `
+              xl:hidden
+              relative inline-flex h-[34px] w-[34px]
+              flex-col justify-between
+              border-none bg-transparent
+              px-[4.25px] py-[8.5px]
+              text-white transition-all duration-300
+              hover:text-accent
+              `,
+              isMenuOpen && "is-active"
+            )}
+          >
+            <span
+              className={cn(
+                `
+                  h-[2px] w-full rounded-full
+                  bg-current transition-all duration-300
+                `,
+                isMenuOpen &&
+                  "origin-left translate-x-[0.25em] translate-y-[-0.1em] rotate-45"
+              )}
+            />
+
+            <span
+              className={cn(
+                `
+                  h-[2px] w-full rounded-full
+                  bg-current transition-all duration-300
+                `,
+                isMenuOpen && "-rotate-45"
+              )}
+            />
+
+            <span
+              className={cn(
+                `
+                  h-[2px] w-[55%] self-end rounded-full
+                  bg-current transition-all duration-300
+                `,
+                isMenuOpen && "w-0"
+              )}
+            />
+          </button>
+
+          <ButtonWell />
+          <ButtonContact />
+        </div>
+      </div>
+    </header>
+  );
 }
