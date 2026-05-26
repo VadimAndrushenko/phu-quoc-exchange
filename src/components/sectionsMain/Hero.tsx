@@ -35,7 +35,7 @@ const container = {
 };
 
 const item: Variants = {
-  hidden: { opacity: 0, y: 24, filter: "blur(10px)" },
+  hidden: { opacity: 0, y: 24, filter: "blur(4px)" },
   show: {
     opacity: 1,
     y: 0,
@@ -176,7 +176,7 @@ export default function Hero() {
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, x: 60, scale: 0.96, filter: "blur(12px)" }}
+          initial={{ opacity: 0, x: 60, scale: 0.96, filter: "blur(4px)" }}
           animate={{ opacity: 1, x: 0, scale: 1, filter: "blur(0px)" }}
           transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
           className="w-full md:max-w-[430px] rounded-[28px] border border-white/10 bg-background p-5 shadow-[0_24px_80px_rgba(0,0,0,0.45)] sm:p-6 md:max-xl:max-w-[400px] md:max-lg:max-w-[350px] max-md:w-full"

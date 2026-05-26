@@ -92,18 +92,16 @@ export default function Header() {
       initial={{
         opacity: 0,
         y: -100,
-        filter: "blur(10px)",
       }}
       animate={{
         opacity: 1,
         y: 0,
-        filter: "blur(0px)",
       }}
       transition={{
         duration: 0.9,
         ease: "easeOut",
       }}
-      className="sticky top-0 z-50 border-b border-white/5 bg-black/10 shadow-[0_4px_20px_rgba(0,0,0,0.12)] backdrop-blur-md transition-all duration-500 will-change-transform supports-[backdrop-filter]:bg-black/10"
+      className="sticky top-0 z-50 border-b border-white/5 bg-black/10 shadow-[0_4px_20px_rgba(0,0,0,0.12)] backdrop-blur-sm transition-all duration-500 will-change-transform supports-[backdrop-filter]:bg-black/10"
     >
       <div className="h-23.5 flex justify-between items-center container max-[480px]:h-17.5">
         <Logo />
@@ -111,10 +109,10 @@ export default function Header() {
         <div
           ref={menuRef}
           className={cn(
-            "max-xl:absolute duration-300 transition max-xl:top-full max-xl:left-0 max-xl:w-full max-xl:bg-[#071311]/95 max-xl:backdrop-blur-xl max-xl:border-t max-xl:border-white/5 max-xl:px-6 max-xl:py-8",
+            "max-xl:absolute duration-300 transition max-xl:top-full max-xl:left-0 max-xl:w-full max-xl:bg-[#071311]/95 max-xl:border-t max-xl:border-white/5 max-xl:px-6 max-xl:py-8",
             isMenuOpen
               ? "max-xl:translate-y-0 max-xl:opacity-100 visible"
-              : "max-xl:-translate-y-5 max-xl:opacity-0 "
+              : "max-xl:-translate-y-5 max-xl:opacity-0 max-xl:pointer-events-none max-xl:-z-10"
           )}
         >
           <nav className="flex items-center max-xl:flex-col max-xl:items-start gap-y-5">

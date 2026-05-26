@@ -56,7 +56,7 @@ export default function RatesButton() {
                     rounded-2xl text-nowrap
 
                     bg-black/40
-                    backdrop-blur-2xl
+                    backdrop-blur-sm
 
                     border border-white/10
                     ${open ? "border-yellow-400/30 scale-[1.03]" : "hover:border-yellow-400/30 hover:scale-[1.03]"}
@@ -134,7 +134,7 @@ export default function RatesButton() {
                         overflow-hidden
 
                         bg-[#071212]/95
-                        backdrop-blur-2xl
+                        backdrop-blur-sm
 
                         border border-white/10
 
