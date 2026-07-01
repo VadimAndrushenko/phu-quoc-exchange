@@ -1,0 +1,199 @@
+"use client";
+
+import { motion } from "framer-motion";
+import {
+  ShieldCheck,
+  AlertTriangle,
+  Users,
+  Handshake,
+  PhoneCall,
+  FileCheck,
+  Lock,
+} from "lucide-react";
+import { useCenterActiveCard } from "@/hooks/useCenterActiveCard";
+
+const infoBlocks = [
+  {
+    icon: ShieldCheck,
+    title: "Усиленный контроль банков",
+    text: "В связи с усилением контроля за банковскими переводами в России банк клиента может запросить дополнительную проверку перевода.",
+    color: "text-emerald-400",
+  },
+  {
+    icon: AlertTriangle,
+    title: "Банк может запросить",
+    text: "• Подтверждение перевода\n• Объяснение назначения платежа\n• Данные получателя\n• Дополнительную идентификацию",
+    color: "text-amber-400",
+  },
+  {
+    icon: Users,
+    title: "Важно понимать",
+    text: "Реквизиты для перевода могут принадлежать разным физическим лицам. Это нормальная практика при проведении обмена.",
+    color: "text-white",
+  },
+  {
+    icon: Handshake,
+    title: "Мы не банк",
+    text: "Мы не являемся банком или финансовой организацией. Мы оказываем помощь в проведении обмена RUB → VND.",
+    color: "text-accent",
+  },
+  {
+    icon: PhoneCall,
+    title: "В случае проверки банком",
+    text: "Мы постараемся помочь и предоставить доступную информацию. Однако мы не можем передавать паспортные и банковские данные третьих лиц.",
+    color: "text-rose-400",
+  },
+  {
+    icon: FileCheck,
+    title: "Выдача средств",
+    text: "Обмен считается завершённым только после получения PDF-чека / подтверждения перевода и подтверждения зачисления получателю.",
+    color: "text-emerald-400",
+  },
+  {
+    icon: Lock,
+    title: "Безопасность и ответственность",
+    text: "Все сделки проводятся конфиденциально. Клиент самостоятельно взаимодействует со своим банком и несёт ответственность за подтверждение операции.",
+    color: "text-white",
+  },
+];
+
+export default function Important({ scrollContainer }: { scrollContainer?: HTMLElement | null }) {
+  const { activeIndex, setItemRef } = useCenterActiveCard<HTMLDivElement>("(max-width: 639px)", 180, scrollContainer);
+
+  return (
+    <section id="important" className="relative py-5">
+      <div className="px-0">
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.9 }}
+          className="mb-6 text-center"
+        >
+          <div className="mb-2 inline-flex items-center gap-3">
+            <AlertTriangle className="h-8 w-8 text-accent" />
+            <span className="text-lg font-semibold tracking-widest text-accent max-sm:text-[3.5vw]">
+              ВАЖНАЯ ИНФОРМАЦИЯ
+            </span>
+          </div>
+
+          <h2 className="text-2xl font-semibold uppercase tracking-wide text-white max-sm:text-[6vw]">
+            По переводам и банковским операциям
+          </h2>
+
+          <p className="mx-auto mt-4 max-w-3xl text-white/70 max-sm:text-[4vw]">
+            Пожалуйста, внимательно ознакомьтесь с информацией перед обменом
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {infoBlocks.map((block, i) => {
+            const Icon = block.icon;
+            const isActive = activeIndex === i;
+
+            // Интересные направления появления
+            const getInitial = () => {
+              if (i === 0) return { opacity: 0, x: -80, y: 40 };     // 1 - слева
+              if (i === 1) return { opacity: 0, y: 90 };             // 2 - снизу
+              if (i === 2) return { opacity: 0, x: 80, y: 40 };      // 3 - справа
+              if (i === 3) return { opacity: 0, x: -70, y: 50 };     // 4 - слева
+              if (i === 4) return { opacity: 0, y: 80 };             // 5 - снизу
+              if (i === 5) return { opacity: 0, x: 70, y: 40 };      // 6 - справа
+              return { opacity: 0, y: 60 };                           // 7 - снизу
+            };
+
+            return (
+              <motion.div
+                key={i}
+                ref={setItemRef(i)}
+                initial={getInitial()}
+                whileInView={{
+                  opacity: 1,
+                  x: 0,
+                  y: 0,
+                }}
+                viewport={{ once: true, margin: "-70px" }}
+                transition={{
+                  duration: 0.8,
+                  ease: [0.22, 1, 0.36, 1],
+                  delay: i * 0.08,
+                }}
+                whileHover={{ 
+                  y: -1, 
+                  scale: 1.02,
+                  transition: { duration: 0.4 }
+                }}
+                className={`
+                  group relative overflow-hidden rounded-3xl border
+                  backdrop-blur-sm transition-all duration-500 ease-out py-3 px-5
+                  ${
+                    isActive
+                      ? "border-accent/40 bg-background/35 shadow-[0_0_40px_rgba(245,179,23,0.14)] -translate-y-2 scale-[1.02]"
+                      : "border-white/10 bg-background/50"
+                  }
+                  hover:-translate-y-2 hover:scale-[1.02]
+                  hover:border-accent/40 hover:bg-background/35
+                  hover:shadow-[0_0_40px_rgba(245,179,23,0.14)]
+                `}
+              >
+                <div
+                  className={`
+                    pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500
+                    ${isActive ? "opacity-100" : "group-hover:opacity-100"}
+                    bg-[radial-gradient(circle_at_top,rgba(245,179,23,0.16),transparent_70%)]
+                  `}
+                />
+
+                <div
+                  className={`
+                    relative z-10 flex items-center justify-center
+                    rounded-2xl border bg-accent/5 transition-all duration-500 ease-out mb-3 h-12 w-12
+                    ${
+                      isActive
+                        ? "rotate-6 scale-110 border-accent/40 bg-accent/10"
+                        : "border-accent/20 group-hover:rotate-6 group-hover:scale-110 group-hover:border-accent/40 group-hover:bg-accent/10"
+                    }
+                  `}
+                >
+                  <Icon
+                    className={`transition-transform duration-500 size-7 ${
+                      isActive ? "scale-110" : "group-hover:scale-110"
+                    } ${block.color}`}
+                  />
+                </div>
+
+                <div className="relative z-10">
+                  <h3
+                    className={`
+                      font-semibold leading-tight transition-colors duration-300 mb-2 text-base
+                      ${
+                        isActive ? "text-accent" : "text-white group-hover:text-accent"
+                      }
+                    `}
+                  >
+                    {block.title}
+                  </h3>
+
+                  <p
+                    className={`
+                      whitespace-pre-line leading-relaxed transition-colors duration-300 text-xs
+                      ${
+                        isActive
+                          ? "text-white/85"
+                          : "text-white/70 group-hover:text-white/85"
+                      }
+                    `}
+                  >
+                    {block.text}
+                  </p>
+                </div>
+
+                <div className="absolute bottom-0 left-7 right-7 h-0.5 bg-gradient-to-r from-transparent via-accent/30 to-transparent" />
+              </motion.div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
